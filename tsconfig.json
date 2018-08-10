@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es2015",    
+    "rootDir": "cypress",
+    "outDir": "./cypress/integration",    
+    "baseUrl": "../node_modules",    
+    "skipLibCheck": true,
+	/* Strict Type-Checking Options */
+    "strict": true,
+    "alwaysStrict": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "types": [
+      "cypress"
+    ]
+  },
+  "include": [
+    "cypress/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
