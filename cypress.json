@@ -1,4 +1,4 @@
 {
-	"baseUrl": "https://laterforreddit.com/"
-
+	"baseUrl": "https://laterforreddit.com/",
+    "chromeWebSecurity": false
 }
