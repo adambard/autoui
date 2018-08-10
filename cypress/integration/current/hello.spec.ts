@@ -1,26 +1,23 @@
 /// <reference types="Cypress" />
 
-import { Home } from '../../support/pages/home';
-
 describe('Home Page Behaviour', () => {
-    const home = new Home();
-
     beforeEach(function () {
-        home.navigate();
+        cy.visit('https://laterforreddit.com/');
     })
 
     it('should have a schedule post button', () => {
-        const button = home.getSchedulePostButton();
-        button
+        cy.get('.try-button')
             .should('exist')
             .and('have.attr', 'href')
             .and('include', 'create')
-        ;
+            ;
     });
 
     it('should have at least 1 create post link', () => {
-        home.getCreatePostLinks().then(x =>
-            expect(x.length).above(1)
-        );
+        cy.get('body')
+            .find('a[href*="/create"]')
+            .then(
+                x => expect(x.length).above(1)
+            );
     });
 });
