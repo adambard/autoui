@@ -1,7 +1,11 @@
-const greeter = (person: string) => {
-    return 'Hello, ' + person;
-};
+/// <reference types="Cypress" />
 
-let user1 = 'Jane User';
+import { Home } from '../../pages/home';
 
-document.body.innerHTML = greeter(user1);
+describe('Home Page Behaviour', () => {
+    it('should have a schedule post button', () => {
+        const home = new Home();
+        home.navigate();
+        
+    });
+});
