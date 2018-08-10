@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es2015",    
+    "target": "es2015",
     "rootDir": "cypress",
-    "outDir": "./cypress/integration",    
-    "baseUrl": "../node_modules",    
-    "skipLibCheck": true,
-	/* Strict Type-Checking Options */
+    "outDir": "./cypress/integration",
+    "baseUrl": "../node_modules",
+    "skipLibCheck": true, // do not check types in node_modules folder
+    /* Strict Type-Checking Options */
     "strict": true,
     "alwaysStrict": true,
     "noImplicitThis": true,
