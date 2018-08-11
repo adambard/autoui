@@ -1,4 +1,5 @@
 {
 	"baseUrl": "https://laterforreddit.com/",
-    "chromeWebSecurity": false
+    "chromeWebSecurity": false,
+    "blacklistHosts": "www.google-analytics.com"
 }
