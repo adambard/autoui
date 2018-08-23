@@ -1,5 +1,11 @@
 {
-	"baseUrl": "https://laterforreddit.com/",
+    "baseUrl": "https://laterforreddit.com/",
     "chromeWebSecurity": false,
-    "blacklistHosts": "www.google-analytics.com"
+    "video": false,
+    "blacklistHosts": [
+        "*.google-analytics.com",
+        "*.gstatic.com"
+    ],
+    "pageLoadTimeout": 60000,
+    "responseTimeout": 60000
 }

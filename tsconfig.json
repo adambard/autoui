@@ -15,6 +15,8 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
+    "removeComments": true,
+    "noEmitOnError": true,
     "allowJs": true,
     "lib": [
       "dom",
