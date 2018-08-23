@@ -33,6 +33,7 @@
     "no-string-literal": false,
     "no-trailing-whitespace": true,
     "no-unused-variable": false,
+    "object-literal-sort-keys": false,
     "one-line": [
       true,
       "check-open-brace",
