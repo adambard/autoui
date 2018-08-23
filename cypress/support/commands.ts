@@ -83,18 +83,15 @@ const performRedditAuthorization = (redditAuthLocation: string, modHash: string)
 };
 
 Cypress.Commands.add("logInViaReddit", (username: string, password: string): Cypress.Chainable<any> => {
-    return getAuthRedirect().then(
-        (redditAuthLocation) => {
-            console.log(redditAuthLocation)
-            if (redditAuthLocation.search(/www.reddit.com/)) {
-                getRedditCsrfToken(redditAuthLocation).then((csrfToken) => (
-                    performLogin({ redditAuthLocation, csrfToken, username, password })
-                )).then(() => (
-                    getRedditModhash(redditAuthLocation)
-                )).then((modHash) => (
-                    performRedditAuthorization(redditAuthLocation, modHash)
-                ))
-            }
+    return getAuthRedirect().then((redditAuthLocation) => {
+        if (redditAuthLocation.search(/www.reddit.com/) > 0) {
+            getRedditCsrfToken(redditAuthLocation).then((csrfToken) => (
+                performLogin({ redditAuthLocation, csrfToken, username, password })
+            )).then(() => (
+                getRedditModhash(redditAuthLocation)
+            )).then((modHash) => (
+                performRedditAuthorization(redditAuthLocation, modHash)
+            ))
         }
-    );
+    });
 });
