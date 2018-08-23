@@ -4,7 +4,9 @@
   "description": "testing cypress",
   "main": "index.js",
   "scripts": {
+    "tsc": "tsc --pretty --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "failed-test": "echo Test failed, details in $1",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
   },
@@ -13,6 +15,7 @@
   "devDependencies": {
     "@cypress/webpack-preprocessor": "^2.0.1",
     "cypress": "^3.0.3",
+    "cypress-failed-log": "^2.1.0",
     "ts-loader": "^4.4.2",
     "tslint": "^5.11.0",
     "typescript": "^3.0.1",

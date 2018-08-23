@@ -15,7 +15,11 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-
+    "allowJs": true,
+    "lib": [
+      "dom",
+      "es6"
+    ],
     "types": [
       "cypress"
     ]
