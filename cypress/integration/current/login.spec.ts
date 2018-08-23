@@ -12,7 +12,7 @@ describe("Login", () => {
         Cypress.Cookies.preserveOnce("ring-session");
     });
 
-    it.only("Can log in", () => {
+    it("Can log in", () => {
         cy.visit("https://dashboard.laterforreddit.com/content/");
         cy.get(".identity").should("contain", "adambard");
     });
