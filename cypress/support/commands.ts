@@ -9,8 +9,8 @@ declare namespace Cypress {
 
 const getAuthRedirect = (): Cypress.Chainable<string> => {
     return cy.request({
-        url: "https://dashboard.laterforreddit.com/auth/",
-        method: "GET",
+        url: 'https://dashboard.laterforreddit.com/auth/',
+        method: 'GET',
         followRedirect: false,
     }).then(({ headers }) => {
         return headers.location;
@@ -20,9 +20,9 @@ const getAuthRedirect = (): Cypress.Chainable<string> => {
 const getRedditCsrfToken = (redditAuthLocation: string): Cypress.Chainable<string> => (
     cy.request({
         url: redditAuthLocation,
-        method: "GET",
-    }).then<string>((resp) => Cypress.$(resp.body).find("input[name=csrf_token]").val() as string)
-)
+        method: 'GET',
+    }).then<string>((resp) => Cypress.$(resp.body).find('input[name=csrf_token]').val() as string)
+);
 
 interface ILoginOpts {
     redditAuthLocation: string;
@@ -32,8 +32,8 @@ interface ILoginOpts {
 }
 const performLogin = ({ redditAuthLocation, csrfToken, username, password }: ILoginOpts) => (
     cy.request({
-        url: "https://www.reddit.com/login",
-        method: "POST",
+        url: 'https://www.reddit.com/login',
+        method: 'POST',
         failOnStatusCode: false,
         form: true,
         followRedirect: false,
@@ -42,47 +42,52 @@ const performLogin = ({ redditAuthLocation, csrfToken, username, password }: ILo
             password,
             dest: redditAuthLocation,
             csrf_token: csrfToken,
-            otp: "",
+            otp: '',
         },
     })
-)
+);
 
 const getRedditModhash = (redditAuthLocation: string): Cypress.Chainable<string> => (
     cy.request({
         url: redditAuthLocation,
-        method: "GET",
-    }).then<string>(({ body }) => Cypress.$(body).find("input[name=uh]").val() as string)
+        method: 'GET',
+    }).then<string>(({ body }) => Cypress.$(body).find('input[name=uh]').val() as string)
 );
 
 const performRedditAuthorization = (redditAuthLocation: string, modHash: string): Cypress.Chainable<any> => {
     const statePar = redditAuthLocation.match(/state=([^&]*)&/);
-    let state = "";
+    let state = '';
     if (statePar != null) {
         state = statePar[1];
     }
 
     return cy.request({
-        url: "https://www.reddit.com/api/v1/authorize.json",
-        method: "POST",
+        url: 'https://www.reddit.com/api/v1/authorize.json',
+        method: 'POST',
         form: true,
         headers: {
-            te: "Trailers",
+            te: 'Trailers',
         },
         body: {
-            authorize: "Allow",
-            client_id: "0cd0Jnk4Kmi0FQ", // TODO dynamicize
-            duration: "permanent",
-            redirect_uri: "https://laterforreddit.com/auth/callback",
-            response_type: "code",
+            authorize: 'Allow',
+            client_id: '0cd0Jnk4Kmi0FQ', // TODO dynamicize
+            duration: 'permanent',
+            redirect_uri: 'https://laterforreddit.com/auth/callback',
+            response_type: 'code',
             // scope: "flair+identity+modflair+modposts+submit",
-            scope: "identity",
+            scope: 'identity',
             uh: modHash,
             state,
         },
     });
 };
 
-Cypress.Commands.add("logInViaReddit", (username: string, password: string): Cypress.Chainable<any> => {
+interface ICredentials { username: string; password: string; }
+
+Cypress.Commands.add('logInViaReddit', (opts: ICredentials?): Cypress.Chainable<any> => {
+    const username = opts ? opts.username : Cypress.config('username');
+    const password = opts ? opts.password : Cypress.config('password');
+
     return getAuthRedirect().then((redditAuthLocation) => {
         if (redditAuthLocation.search(/www.reddit.com/) > 0) {
             getRedditCsrfToken(redditAuthLocation).then((csrfToken) => (
@@ -91,7 +96,7 @@ Cypress.Commands.add("logInViaReddit", (username: string, password: string): Cyp
                 getRedditModhash(redditAuthLocation)
             )).then((modHash) => (
                 performRedditAuthorization(redditAuthLocation, modHash)
-            ))
+            ));
         }
     });
 });

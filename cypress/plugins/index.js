@@ -11,11 +11,23 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
+const fs = require('fs-extra')
+const path = require('path')
 const wp = require('@cypress/webpack-preprocessor')
 
-module.exports = (on) => {
+const loadConfig = (file) => {
+  const pathToConfigFile = path.resolve('.', 'config', `${file}.json`)
+  return fs.readJson(pathToConfigFile)
+}
+
+module.exports = (on, config) => {
+  // Apply webpack config
   const options = {
     webpackOptions: require('../../webpack.config'),
   }
+
   on('file:preprocessor', wp(options))
+
+  // Read config
+  return Object.assign(config, loadConfig(config.env.configFile || 'development'))
 }

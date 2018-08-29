@@ -21,7 +21,7 @@ describe('Home Page Behaviour', () => {
         );
     });
 
-    it.only('video is visible', () => {
+    it('video is visible', () => {
         cy.get('div.video-container')
             .should('be.visible');
     });
