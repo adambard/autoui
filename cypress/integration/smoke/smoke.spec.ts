@@ -1,14 +1,13 @@
 /// <reference types="Cypress" />
 
 import '../../support/commands';
-import * as constants from '../../support/constants';
 
 describe('Smoke Tests', () => {
 
     describe('Post Creation', () => {
         before(() => {
             cy.clearCookies();
-            cy.logInViaReddit(constants.username, constants.password);
+            cy.logInViaReddit();
             Cypress.Cookies.preserveOnce('ring-session');
         });
 

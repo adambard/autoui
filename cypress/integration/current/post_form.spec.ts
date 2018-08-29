@@ -6,6 +6,7 @@ describe('Content Creation Form', () => {
 
     describe('Pre-login stash feature', () => {
         it('Works', () => {
+            cy.clearCookies();
             cy.visit('https://dashboard.laterforreddit.com/content/create/');
 
             cy.get('.title-field > input').type('Post Title');
@@ -17,7 +18,7 @@ describe('Content Creation Form', () => {
 
             cy.get('.loading-button').click();
 
-            cy.logInViaReddit('BackgroundUnion', 'bo0bo0bo0');
+            cy.logInViaReddit();
             cy.visit('https://dashboard.laterforreddit.com/');
 
             // TODO: Login with a fresh user to see this work, or just fix it

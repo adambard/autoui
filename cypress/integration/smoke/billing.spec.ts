@@ -7,7 +7,7 @@ describe.only('Billing Pages', () => {
 
     describe('Subscription Picker', () => {
         before(() => {
-            cy.logInViaReddit(constants.username, constants.password);
+            cy.logInViaReddit();
             Cypress.Cookies.preserveOnce('ring-session');
         });
 

@@ -17,7 +17,7 @@ const wp = require('@cypress/webpack-preprocessor')
 
 const loadConfig = (file) => {
   const pathToConfigFile = path.resolve('.', 'config', `${file}.json`)
-  return fs.readJson(pathToConfigFile)
+  return fs.readJson(pathToConfigFile, { throws: false })
 }
 
 module.exports = (on, config) => {
@@ -29,5 +29,8 @@ module.exports = (on, config) => {
   on('file:preprocessor', wp(options))
 
   // Read config
-  return Object.assign(config, loadConfig(config.env.configFile || 'development'))
+  return loadConfig(config.env.configFile || 'development').then(envOverride => {
+    const env = Object.assign(config.env || {}, envOverride);
+    return Object.assign(config, {env: env})
+  })
 }
