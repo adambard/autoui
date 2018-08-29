@@ -5,10 +5,13 @@
   "main": "index.js",
   "scripts": {
     "tsc": "tsc --pretty --noEmit",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "echo",
     "failed-test": "echo Test failed, details in $1",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
+    "cypress:run-current": "cypress run --env configFile=production --spec ./cypress/integration/current/*.ts",
+    "cypress:run-smoke": "cypress run --env configFile=production --spec ./cypress/integration/smoke/*.ts",
+    "cypress:run-regression": "cypress run --env configFile=production --spec ./cypress/integration/regression/*.ts",
     "lint": "tslint --project ./tsconfig.json --config ./tslint.json"
   },
   "author": "",
