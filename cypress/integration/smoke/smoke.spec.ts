@@ -6,16 +6,18 @@ describe('Smoke Tests', () => {
 
     describe('Post Creation', () => {
         before(() => {
-            cy.clearCookies();
+            cy.fixture('post.json').as('postData');
             cy.logInViaReddit();
             Cypress.Cookies.preserveOnce('ring-session');
         });
 
-        it('Can create a post', () => {
+        it('Can create a post with title', () => {
+            const title = 'Test Post Please Ignore';
+
             cy.visit('https://dashboard.laterforreddit.com/content/create/');
 
             cy.get('.identity').should('contain', 'adambard');
-            cy.get('.title-field > input').type('Test Post Please Ignore');
+            cy.get('.title-field > input').type(title);
             cy.get('.link-field > input').type('https://laterforreddit.com');
             cy.get('.submit-field > input').click();
 
@@ -28,13 +30,7 @@ describe('Smoke Tests', () => {
             cy.get('.user').should('contain', 'adambard');
             cy.get('.date').should('contain', '2118');
 
-            cy.get('.delete-control > .control > .icon').click();
-            cy.get('.yes').click();
-
-            cy.get('.content-list > a').click();
-            cy.get(':nth-child(1) > .post-controls > .delete-control > .control > .icon').click();
-            cy.get('.yes').click();
+            cy.deletePostByTitle(title);
         });
-
     });
 });
