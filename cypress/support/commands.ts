@@ -11,6 +11,7 @@ declare namespace Cypress {
 
 const getAuthRedirect = (): Cypress.Chainable<string> => {
     return cy.request({
+        log: false,
         url: 'https://dashboard.laterforreddit.com/auth/',
         method: 'GET',
         followRedirect: false
@@ -21,6 +22,7 @@ const getAuthRedirect = (): Cypress.Chainable<string> => {
 
 const getRedditCsrfToken = (): Cypress.Chainable<string> => {
     return cy.request({
+        log: false,
         url: 'https://www.reddit.com/login',
         method: 'GET',
         headers: {
@@ -60,8 +62,9 @@ const performLogin = ({ redditAuthLocation, csrfToken, username, password }: ILo
 
 const getRedditModhash = (redditAuthLocation: string): Cypress.Chainable<string> => (
     cy.request({
+        log: false,
         url: redditAuthLocation,
-        method: 'GET',
+        method: 'GET'
     }).then<string>(({ body }) => (
         (Cypress.$(body).find('input[name=uh]').val() || '').toString()
     ))
@@ -75,6 +78,7 @@ const performRedditAuthorization = (redditAuthLocation: string, modHash: string)
     }
 
     return cy.request({
+        log: false,
         url: 'https://www.reddit.com/api/v1/authorize.json',
         method: 'POST',
         form: true,
@@ -103,10 +107,13 @@ Cypress.Commands.add('logInViaReddit', (opts?: ICredentials): Cypress.Chainable<
         if (redditAuthLocation.search(/www.reddit.com/) > 0) {
             // Clear cookies on reddit.com as well
             cy.request({ url: 'https://www.reddit.com/logoutproxy', method: 'POST' });
-            cy.clearCookies();
-            getRedditCsrfToken().then((csrfToken) => (
+            cy.clearCookies({ log: false });
+            getRedditCsrfToken().then((csrfToken) => {
                 performLogin({ redditAuthLocation, csrfToken, username, password })
-            ));
+                    .then((resp) => {
+                        expect(resp.status, 'Unable to log in').eq(200);
+                    });
+            });
             getRedditModhash(redditAuthLocation).then((modHash) => (
                 performRedditAuthorization(redditAuthLocation, modHash)
             ));

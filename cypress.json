@@ -7,9 +7,5 @@
         "*.gstatic.com"
     ],
     "pageLoadTimeout": 60000,
-    "responseTimeout": 60000,
-    "env": {
-        "username": "adam",
-        "password": "irfan"
-    }
+    "responseTimeout": 60000
 }
