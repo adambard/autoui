@@ -14,10 +14,28 @@
 const fs = require('fs-extra')
 const path = require('path')
 const wp = require('@cypress/webpack-preprocessor')
+const _ = require('lodash')
 
 const loadConfig = (file) => {
   const pathToConfigFile = path.resolve('.', 'config', `${file}.json`)
   return fs.readJson(pathToConfigFile, { throws: false })
+}
+
+const requiredFields = {
+  "username": "Username is required",
+  "password": "Password is required"
+}
+
+const checkConfig = (config) => {
+  if (!config) {
+    throw Error("No configuration found!")
+  }
+
+  _.each(requiredFields, (msg, field) => {
+    if (!config[field]) {
+      throw Error(msg);
+    }
+  })
 }
 
 module.exports = (on, config) => {
@@ -27,10 +45,10 @@ module.exports = (on, config) => {
   }
 
   on('file:preprocessor', wp(options))
-
   // Read config
   return loadConfig(config.env.configFile || 'development').then(envOverride => {
+    checkConfig(envOverride);
     const env = Object.assign(config.env || {}, envOverride);
-    return Object.assign(config, {env: env})
+    return Object.assign(config, { env: env })
   })
 }

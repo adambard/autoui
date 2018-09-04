@@ -1,9 +1,8 @@
 /// <reference types="Cypress" />
 
 import '../../support/commands';
-import * as constants from '../../support/constants';
 
-describe.only('Billing Pages', () => {
+describe('Billing Pages', () => {
 
     describe('Subscription Picker', () => {
         before(() => {
