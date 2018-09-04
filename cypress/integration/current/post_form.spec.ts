@@ -8,19 +8,15 @@ describe('Content Creation Form', () => {
         it('Works', () => {
             cy.clearCookies();
 
-            cy.fixture('post.json').then((posts: Array<{ title: string, link: string }>) => {
-                posts.forEach(({ title, link }) => {
-                    cy.visit('https://dashboard.laterforreddit.com/content/create/');
-                    cy.get('.title-field > input').type(title);
-                    cy.get('.link-field > input').type(link + '{enter}');
+            cy.visit('https://dashboard.laterforreddit.com/content/create/');
+            cy.get('.title-field > input').type('Test Post');
+            cy.get('.link-field > input').type('https://laterforreddit.com/{enter}');
 
-                    cy.get('.login > a').should('contain', 'Sign In with Reddit');
+            cy.get('.login > a').should('contain', 'Sign In with Reddit');
 
-                    cy.get('.subreddit-field > input').type('redditlater');
+            cy.get('.subreddit-field > input').type('redditlater');
 
-                    cy.get('.loading-button').click();
-                });
-            });
+            cy.get('.loading-button').click();
 
             cy.logInViaReddit();
             cy.visit('https://dashboard.laterforreddit.com/');

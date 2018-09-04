@@ -39,13 +39,14 @@ const checkConfig = (config) => {
 }
 
 module.exports = (on, config) => {
-  // Apply webpack config
+  // Apply webpack config to compile typescript
   const options = {
     webpackOptions: require('../../webpack.config'),
   }
 
   on('file:preprocessor', wp(options))
-  // Read config
+
+  // Read config from configFile env prop
   return loadConfig(config.env.configFile || 'development').then(envOverride => {
     checkConfig(envOverride);
     const env = Object.assign(config.env || {}, envOverride);

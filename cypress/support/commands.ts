@@ -100,7 +100,6 @@ Cypress.Commands.add('logInViaReddit', (opts?: ICredentials): Cypress.Chainable<
         if (redditAuthLocation.search(/www.reddit.com/) > 0) {
             // Clear cookies on reddit.com as well
             cy.request({ url: 'https://www.reddit.com/logoutproxy', method: 'POST' });
-            cy.clearCookies({ log: false });
             getRedditCsrfToken().then((csrfToken) => {
                 performLogin({ redditAuthLocation, csrfToken, username, password })
                     .then((resp) => {
