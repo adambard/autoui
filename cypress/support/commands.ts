@@ -2,13 +2,6 @@
 
 interface ICredentials { username: string; password: string; }
 
-// tslint:disable-next-line no-namespace
-declare namespace Cypress {
-    interface Chainable {  // tslint:disable-line interface-name
-        logInViaReddit(opts?: ICredentials): Cypress.Chainable<string>;
-    }
-}
-
 const getAuthRedirect = (): Cypress.Chainable<string> => {
     return cy.request({
         url: 'https://dashboard.laterforreddit.com/auth/',
@@ -113,3 +106,19 @@ Cypress.Commands.add('logInViaReddit', (opts?: ICredentials): Cypress.Chainable<
         }
     });
 });
+
+Cypress.Commands.add('deletePostByTitle', (title: string) => {
+    cy.visit('https://dashboard.laterforreddit.com/content/');
+    cy.get('.identity').should('contain', 'adambard');
+
+    cy.get('.content-header').contains(title).parents('.content-item').find('.post-controls > .delete-control > .control > .icon').click();
+    cy.get('.yes').click();
+});
+
+// tslint:disable-next-line no-namespace
+declare namespace Cypress {
+    interface Chainable {  // tslint:disable-line interface-name
+        logInViaReddit(opts?: ICredentials): Cypress.Chainable<string>;
+        deletePostByTitle(title: string): Cypress.Chainable;
+    }
+}
