@@ -41,7 +41,7 @@ interface ILoginOpts {
     password: string;
 }
 const performLogin = ({ redditAuthLocation, csrfToken, username, password }: ILoginOpts) => {
-    cy.log('Logging in as user:', username);
+    cy.log('Logging in as user: ' + username);
     return cy.request({
         url: 'https://www.reddit.com/login',
         method: 'POST',
@@ -101,12 +101,13 @@ Cypress.Commands.add('logInViaReddit', (opts?: ICredentials): Cypress.Chainable<
 
     return getAuthRedirect().then((redditAuthLocation) => {
         if (redditAuthLocation.search(/www.reddit.com/) > 0) {
+            // Clear cookies on reddit.com as well
+            cy.request({ url: 'https://www.reddit.com/logoutproxy', method: 'POST' });
             cy.clearCookies();
             getRedditCsrfToken().then((csrfToken) => (
                 performLogin({ redditAuthLocation, csrfToken, username, password })
-            )).then(() => (
-                getRedditModhash(redditAuthLocation)
-            )).then((modHash) => (
+            ));
+            getRedditModhash(redditAuthLocation).then((modHash) => (
                 performRedditAuthorization(redditAuthLocation, modHash)
             ));
         }
